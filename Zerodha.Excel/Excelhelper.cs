@@ -99,6 +99,7 @@ namespace Zerodha.Excel
                 candle.Close = Close;
                 candle.Volume = long.Parse(c[5].ToString());
                 candle.LowToHigh = LowToHigh;
+                candle.Gap = candleList.Any() ? Open - candleList.Last().Close : 0;
                 candle.CENTHigh = ((High - Open) / Open) * 100;
                 candle.CENTLow = ((Open - Low) / Open) * 100;
                 candle.CENTClose = ((Open - Close) / Open) * 100;

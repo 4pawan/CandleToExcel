@@ -21,7 +21,7 @@ namespace Zerodha.Excel
         public double CENTClose { get; set; }  // open -close
         public double LowToHigh { get; set; }
         public double CENTLowToHigh { get; set; }
-
+        public double Gap { get; set; }
     }
 
     public class Response
