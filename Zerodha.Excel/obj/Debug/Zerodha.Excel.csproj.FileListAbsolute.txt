@@ -18,3 +18,4 @@ C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\ICSharpCode.SharpZipL
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\ICSharpCode.SharpZipLib.xml
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\NPOI.xml
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\NPOI.OOXML.xml
+C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\obj\Debug\Zerodha.Excel.csproj.AssemblyReference.cache
