@@ -87,15 +87,19 @@ namespace Zerodha.Excel
                 var candle = new Candles();
                 var _date = DateTime.Parse(Convert.ToString(c[0]));
                 candle.Date = _date;
+                double Open = Convert.ToDouble(c[1]);
+                double High = Convert.ToDouble(c[2]);
+                double Low = Convert.ToDouble(c[3]);
+                double Close = Convert.ToDouble(c[4]);
                 candle.DateFormated = _date.ToString("dd-MM-yyyy");
-                candle.Open = Convert.ToDouble(c[1]);
-                candle.High = Convert.ToDouble(c[2]);
-                candle.Low = Convert.ToDouble(c[3]);
-                candle.Close = Convert.ToDouble(c[4]);
+                candle.Open = Open;
+                candle.High = High;
+                candle.Low = Low;
+                candle.Close = Close;
                 candle.Volume = long.Parse(c[5].ToString());
-                candle._CENTHigh = Convert.ToDouble(c[2]);
-                candle._CENTLow = Convert.ToDouble(c[3]);
-                candle._CENTClose = Convert.ToDouble(c[4]);
+                candle._CENTHigh = ((High - Open) / Open) * 100;
+                candle._CENTLow = ((Open - Low) / Open) * 100;
+                candle._CENTClose = ((Open - Close) / Open) * 100;
                 candleList.Add(candle);
             }
 
