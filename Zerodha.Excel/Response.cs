@@ -8,6 +8,7 @@ namespace Zerodha.Excel
 {
     public class Candles
     {
+        public DateTime Date { get; set; }
         public string DateFormated { get; set; }
         public double Open { get; set; }
         public double High { get; set; }

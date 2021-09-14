@@ -18,6 +18,7 @@ namespace Zerodha.Excel
             string json = ReadJson();
             List<Candles> candleList = FormatJsonToObject(json);
             DataTable dt = ObjectToDataTable(candleList);
+            dt.Columns.Remove("Date");
             CreateExcel(dt);
         }
 
@@ -84,7 +85,9 @@ namespace Zerodha.Excel
             foreach (List<object> c in data.data.candles)
             {
                 var candle = new Candles();
-                candle.DateFormated = c[0].ToString();
+                var _date = DateTime.Parse(Convert.ToString(c[0]));
+                candle.Date = _date;
+                candle.DateFormated = _date.ToString("dd-MM-yyyy");
                 candle.Open = Convert.ToDouble(c[1]);
                 candle.High = Convert.ToDouble(c[2]);
                 candle.Low = Convert.ToDouble(c[3]);
@@ -96,7 +99,7 @@ namespace Zerodha.Excel
                 candleList.Add(candle);
             }
 
-            return candleList;
+            return candleList.OrderByDescending(c => c.Date).ToList();
         }
 
         static DataTable ObjectToDataTable(List<Candles> candleList)
