@@ -56,7 +56,7 @@ namespace Zerodha.Excel
                         {
                             row.CreateCell(cellIndex).SetCellValue(dsrow[col].ToString());
                         }
-                        else if (cellIndex == 4)
+                        else if (cellIndex == 5)
                         {
                             row.CreateCell(cellIndex).SetCellValue(long.Parse(dsrow[col].ToString()));
                         }
