@@ -16,9 +16,12 @@ namespace Zerodha.Excel
         public double Low { get; set; }
         public double Close { get; set; }
         public long Volume { get; set; }
-        public double _CENTHigh { get; set; } // high - open
-        public double _CENTLow { get; set; }  // open- low
-        public double _CENTClose { get; set; }  // open -close
+        public double CENTHigh { get; set; } // high - open
+        public double CENTLow { get; set; }  // open- low
+        public double CENTClose { get; set; }  // open -close
+        public double LowToHigh { get; set; }
+        public double CENTLowToHigh { get; set; }
+
     }
 
     public class Response

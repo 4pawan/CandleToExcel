@@ -91,15 +91,18 @@ namespace Zerodha.Excel
                 double High = Convert.ToDouble(c[2]);
                 double Low = Convert.ToDouble(c[3]);
                 double Close = Convert.ToDouble(c[4]);
+                double LowToHigh = High - Low;
                 candle.DateFormated = _date.ToString("dd-MM-yyyy");
                 candle.Open = Open;
                 candle.High = High;
                 candle.Low = Low;
                 candle.Close = Close;
                 candle.Volume = long.Parse(c[5].ToString());
-                candle._CENTHigh = ((High - Open) / Open) * 100;
-                candle._CENTLow = ((Open - Low) / Open) * 100;
-                candle._CENTClose = ((Open - Close) / Open) * 100;
+                candle.LowToHigh = LowToHigh;
+                candle.CENTHigh = ((High - Open) / Open) * 100;
+                candle.CENTLow = ((Open - Low) / Open) * 100;
+                candle.CENTClose = ((Open - Close) / Open) * 100;
+                candle.CENTLowToHigh = (LowToHigh / Low) * 100;
                 candleList.Add(candle);
             }
 
