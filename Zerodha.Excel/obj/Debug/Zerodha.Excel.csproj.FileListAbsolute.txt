@@ -1,7 +1,6 @@
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\Zerodha.Excel.exe.config
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\Zerodha.Excel.exe
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\bin\Debug\Zerodha.Excel.pdb
-C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\obj\Debug\Zerodha.Excel.csproj.AssemblyReference.cache
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\obj\Debug\Zerodha.Excel.csproj.CoreCompileInputs.cache
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\obj\Debug\Zerodha.Excel.exe
 C:\Project\Kite.Exce\Zerodha.Excel\Zerodha.Excel\obj\Debug\Zerodha.Excel.pdb

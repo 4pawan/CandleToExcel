@@ -22,9 +22,10 @@ namespace Zerodha.Excel
     {
         public string status { get; set; }
         public Data data { get; set; }
-        public class Data
-        {
-            public List<List<object>> candles { get; set; }
-        }
     }
+    public class Data
+    {
+        public List<List<object>> candles { get; set; }
+    }
+
 }
