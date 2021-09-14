@@ -13,6 +13,9 @@ namespace Zerodha.Excel
     {
         static void Main(string[] args)
         {
+            string path = Directory.GetCurrentDirectory();
+            Console.WriteLine(path + "\n\n");
+
             Excelhelper.ExportToExcel();
             Console.WriteLine("------Press any key to exit! -----------------");
             Console.ReadKey();
