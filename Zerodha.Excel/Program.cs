@@ -19,7 +19,7 @@ namespace Zerodha.Excel
             Console.WriteLine("Press key D to get weekly data");
             Console.WriteLine("Press key W to get daily data");
             var input = Console.ReadKey();
-            
+            Console.WriteLine("Generating excel now..");
             Excelhelper.ExportToExcel(input.Key.ToString());
             Console.WriteLine("------Press any key to exit! -----------------");
             Console.ReadKey();
