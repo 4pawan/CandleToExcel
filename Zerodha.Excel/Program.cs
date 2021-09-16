@@ -15,8 +15,12 @@ namespace Zerodha.Excel
         {
             string path = Directory.GetCurrentDirectory();
             Console.WriteLine(path + "\n\n");
-
-            Excelhelper.ExportToExcel();
+            Console.WriteLine("Press key M to get monthly data");
+            Console.WriteLine("Press key D to get weekly data");
+            Console.WriteLine("Press key W to get daily data");
+            var input = Console.ReadKey();
+            
+            Excelhelper.ExportToExcel(input.Key.ToString());
             Console.WriteLine("------Press any key to exit! -----------------");
             Console.ReadKey();
         }

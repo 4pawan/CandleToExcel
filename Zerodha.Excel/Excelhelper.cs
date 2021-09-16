@@ -13,11 +13,18 @@ namespace Zerodha.Excel
 {
     public class Excelhelper
     {
-        public static void ExportToExcel()
+        private static string dateFormat = "dd-MM-yyyy";
+        public static void ExportToExcel(string key)
         {
             string json = ReadJson();
             List<Candles> candleList = FormatJsonToObject(json);
-            DataTable dt = ObjectToDataTable(candleList);
+
+            if (key == "M")
+            {
+                candleList = GetMonthlyData(candleList);
+            }
+
+            DataTable dt = ObjectToDataTable(candleList.OrderByDescending(c => c.Date).ToList());
             dt.Columns.Remove("Date");
             CreateExcel(dt);
         }
@@ -92,7 +99,7 @@ namespace Zerodha.Excel
                 double Low = Convert.ToDouble(c[3]);
                 double Close = Convert.ToDouble(c[4]);
                 double LowToHigh = High - Low;
-                candle.DateFormated = _date.ToString("dd-MM-yyyy");
+                candle.DateFormated = _date.ToString(dateFormat);
                 candle.Open = Open;
                 candle.High = High;
                 candle.Low = Low;
@@ -107,13 +114,52 @@ namespace Zerodha.Excel
                 candleList.Add(candle);
             }
 
-            return candleList.OrderByDescending(c => c.Date).ToList();
+            return candleList;
         }
 
         static DataTable ObjectToDataTable(List<Candles> candleList)
         {
             DataTable table = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(candleList), (typeof(DataTable)));
             return table;
+        }
+        static List<Candles> GetMonthlyData(List<Candles> candleList)
+        {
+            List<Candles> monthlyList = new List<Candles>();
+            DateTime mindate = candleList.Min(d => d.Date);
+            DateTime maxdate = candleList.Max(d => d.Date);
+
+            for (int i = mindate.Year; i <= maxdate.Year; i++)
+            {
+                int month = mindate.Year == i ? mindate.Month : 1;
+                for (int m = month; m <= 12; m++)
+                {
+                    var rangeMonthlyDates = candleList.Where(c => c.Date.Year == i && c.Date.Month == m);
+                    if (!rangeMonthlyDates.Any())
+                        continue;
+
+                    var candle = new Candles();
+                    DateTime date = new DateTime(i, m, 1);
+                    double open = rangeMonthlyDates.First().Open;
+                    double high = rangeMonthlyDates.Max(c => c.High);
+                    double low = rangeMonthlyDates.Min(c => c.Low);
+                    double close = rangeMonthlyDates.Last().Close;
+                    double lowToHigh = high - low;
+                    candle.Date = date;
+                    candle.DateFormated = date.ToString(dateFormat);
+                    candle.Open = open;
+                    candle.Low = low;
+                    candle.High = high;
+                    candle.Close = close;
+                    candle.LowToHigh = lowToHigh;
+                    candle.CENTHigh = ((high - open) / open) * 100;
+                    candle.CENTLow = ((open - low) / open) * 100;
+                    candle.CENTClose = ((close - open) / open) * 100;
+                    candle.CENTLowToHigh = (lowToHigh / low) * 100;
+                    monthlyList.Add(candle);
+                }
+
+            }
+            return monthlyList;
         }
     }
 }
