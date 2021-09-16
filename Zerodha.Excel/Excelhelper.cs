@@ -109,7 +109,7 @@ namespace Zerodha.Excel
                 candle.Gap = candleList.Any() ? Open - candleList.Last().Close : 0;
                 candle.CENTHigh = ((High - Open) / Open) * 100;
                 candle.CENTLow = ((Open - Low) / Open) * 100;
-                candle.CENTClose = ((Open - Close) / Open) * 100;
+                candle.CENTClose = ((Close - Open) / Open) * 100;
                 candle.CENTLowToHigh = (LowToHigh / Low) * 100;
                 candleList.Add(candle);
             }
