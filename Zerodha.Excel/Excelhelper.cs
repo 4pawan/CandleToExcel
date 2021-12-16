@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
@@ -48,6 +49,9 @@ namespace Zerodha.Excel
 
                 foreach (System.Data.DataColumn column in table.Columns)
                 {
+                    if (column.ColumnName == "IsLowerTailLarger")
+                        continue;
+
                     columns.Add(column.ColumnName);
                     row.CreateCell(columnIndex).SetCellValue(column.ColumnName);
                     columnIndex++;
@@ -67,6 +71,21 @@ namespace Zerodha.Excel
                         else if (cellIndex == 5)
                         {
                             row.CreateCell(cellIndex).SetCellValue(long.Parse(dsrow[col].ToString()));
+                        }
+                        else if (cellIndex == 8)
+                        {
+                            ICellStyle backGroundColorStyle = workbook.CreateCellStyle();
+                            short colorBlue = HSSFColor.Red.Index;
+                            backGroundColorStyle.FillForegroundColor = colorBlue;
+                            backGroundColorStyle.FillPattern = FillPattern.LessDots;
+                            var cell = row.CreateCell(cellIndex);
+                            var rowVal = Convert.ToDouble(dsrow[col]);
+                            bool isLowerTailLarger = Convert.ToBoolean(dsrow[14]);
+                            cell.SetCellValue(rowVal);
+                            if (isLowerTailLarger)
+                            {
+                                cell.CellStyle = backGroundColorStyle;
+                            }
                         }
                         else
                         {
@@ -111,6 +130,7 @@ namespace Zerodha.Excel
                 candle.CENTLow = ((Open - Low) / Open) * 100;
                 candle.CENTClose = ((Close - Open) / Open) * 100;
                 candle.CENTLowToHigh = (LowToHigh / Low) * 100;
+                SetTailProperty(candle);
                 candleList.Add(candle);
             }
 
@@ -160,6 +180,28 @@ namespace Zerodha.Excel
 
             }
             return monthlyList;
+        }
+        static void SetTailProperty(Candles candle)
+        {
+            if (candle.Close == candle.Open)
+            {
+                candle.UpperTail = 0;
+                candle.LowerTail = 0;
+            }
+
+            if (candle.Close > candle.Open)
+            {
+                //when green candle
+                candle.UpperTail = candle.High - candle.Close;
+                candle.LowerTail = candle.Open - candle.Low;
+            }
+            else
+            {
+                //when red candle
+                candle.UpperTail = candle.High - candle.Open;
+                candle.LowerTail = candle.Close - candle.Low;
+            }
+            candle.IsLowerTailLarger = candle.LowerTail > candle.UpperTail;
         }
     }
 }
