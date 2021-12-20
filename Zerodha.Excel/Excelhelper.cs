@@ -42,7 +42,7 @@ namespace Zerodha.Excel
             {
                 IWorkbook workbook = new XSSFWorkbook();
                 ISheet excelSheet = workbook.CreateSheet("Sheet1");
-
+                excelSheet.CreateFreezePane(0,1);
                 List<String> columns = new List<string>();
                 IRow row = excelSheet.CreateRow(0);
                 int columnIndex = 0;
@@ -130,6 +130,7 @@ namespace Zerodha.Excel
                 candle.CENTLow = ((Open - Low) / Open) * 100;
                 candle.CENTClose = ((Close - Open) / Open) * 100;
                 candle.CENTLowToHigh = (LowToHigh / Low) * 100;
+                candle.CandleWeight = Close - Open;
                 SetTailProperty(candle);
                 candleList.Add(candle);
             }

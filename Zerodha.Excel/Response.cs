@@ -26,6 +26,8 @@ namespace Zerodha.Excel
         public double CENTLowToHigh { get; set; }
         public double Gap { get; set; }
         public bool IsLowerTailLarger { get; set; }
+        public double CandleWeight { get; set; }
+
     }
 
     public class Response
