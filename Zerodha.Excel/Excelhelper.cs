@@ -42,7 +42,7 @@ namespace Zerodha.Excel
             {
                 IWorkbook workbook = new XSSFWorkbook();
                 ISheet excelSheet = workbook.CreateSheet("Sheet1");
-                excelSheet.CreateFreezePane(0,1);
+                excelSheet.CreateFreezePane(0, 1);
                 List<String> columns = new List<string>();
                 IRow row = excelSheet.CreateRow(0);
                 int columnIndex = 0;
@@ -66,7 +66,17 @@ namespace Zerodha.Excel
                     {
                         if (cellIndex == 0)
                         {
-                            row.CreateCell(cellIndex).SetCellValue(dsrow[col].ToString());
+                            DateTime date = Convert.ToDateTime(dsrow[col].ToString());
+                            var cell = row.CreateCell(cellIndex);
+                            if (IsMonday(date))
+                            {
+                                ICellStyle backGroundColorStyle = workbook.CreateCellStyle();
+                                short colorBlue = HSSFColor.Blue.Index;
+                                backGroundColorStyle.FillForegroundColor = colorBlue;
+                                backGroundColorStyle.FillPattern = FillPattern.LessDots;
+                                cell.CellStyle = backGroundColorStyle;
+                            }
+                            cell.SetCellValue(dsrow[col].ToString());
                         }
                         else if (cellIndex == 5)
                         {
@@ -203,6 +213,11 @@ namespace Zerodha.Excel
                 candle.LowerTail = candle.Close - candle.Low;
             }
             candle.IsLowerTailLarger = candle.LowerTail > candle.UpperTail;
+        }
+
+        static bool IsMonday(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Monday;
         }
     }
 }
