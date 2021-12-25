@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Zerodha.Excel
 {
     public class Excelhelper
     {
-        private static string dateFormat = "dd-MM-yyyy";
+        private static string dateFormat = "dd-MM-yyyy:hh:mm";
         public static void ExportToExcel(string key)
         {
             string json = ReadJson();
@@ -66,7 +67,7 @@ namespace Zerodha.Excel
                     {
                         if (cellIndex == 0)
                         {
-                            DateTime date = Convert.ToDateTime(dsrow[col].ToString());
+                            DateTime date = DateTime.ParseExact(dsrow[col].ToString(), dateFormat, CultureInfo.InvariantCulture);
                             var cell = row.CreateCell(cellIndex);
                             if (IsMonday(date))
                             {
