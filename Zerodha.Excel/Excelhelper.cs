@@ -61,7 +61,7 @@ namespace Zerodha.Excel
                 XSSFConditionalFormattingRule cfVolatilityYellow =
                     (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, "2");
                 XSSFPatternFormatting fillyellow = (XSSFPatternFormatting)cfVolatilityYellow.CreatePatternFormatting();
-                fillyellow.FillBackgroundColor = IndexedColors.LightYellow.Index;
+                fillyellow.FillBackgroundColor = IndexedColors.LightOrange.Index;
                 fillyellow.FillPattern = FillPattern.SolidForeground;
                 CellRangeAddress[] cfRangelowToHighInCent = { CellRangeAddress.ValueOf($"M2:M{rowCount}") };
                 condFormating.AddConditionalFormatting(cfRangelowToHighInCent, cfVolatilityYellow);
@@ -73,6 +73,8 @@ namespace Zerodha.Excel
                 fill_light.FillPattern = FillPattern.SolidForeground;
                 CellRangeAddress[] cfRangelightlowToHighInCent = { CellRangeAddress.ValueOf($"G2:G{rowCount}") };
                 condFormating.AddConditionalFormatting(cfRangelightlowToHighInCent, cfVolatilitylight);
+
+
                 
                 List<String> columns = new List<string>();
                 IRow row = excelSheet.CreateRow(0);
@@ -87,7 +89,6 @@ namespace Zerodha.Excel
                     row.CreateCell(columnIndex).SetCellValue(column.ColumnName);
                     columnIndex++;
                 }
-
                 int rowIndex = 1;
                 foreach (DataRow dsrow in table.Rows)
                 {
@@ -102,9 +103,9 @@ namespace Zerodha.Excel
                             if (IsMonday(date))
                             {
                                 ICellStyle backGroundColorStyle = workbook.CreateCellStyle();
-                                short colorBlue = HSSFColor.Blue.Index;
+                                short colorBlue = HSSFColor.Grey25Percent.Index;
                                 backGroundColorStyle.FillForegroundColor = colorBlue;
-                                backGroundColorStyle.FillPattern = FillPattern.LessDots;
+                                backGroundColorStyle.FillPattern = FillPattern.SolidForeground;
                                 cell.CellStyle = backGroundColorStyle;
                             }
                             cell.SetCellValue(dsrow[col].ToString());
@@ -116,9 +117,9 @@ namespace Zerodha.Excel
                         else if (cellIndex == 8)
                         {
                             ICellStyle backGroundColorStyle = workbook.CreateCellStyle();
-                            short colorBlue = HSSFColor.Red.Index;
+                            short colorBlue = HSSFColor.LightYellow.Index;
                             backGroundColorStyle.FillForegroundColor = colorBlue;
-                            backGroundColorStyle.FillPattern = FillPattern.LessDots;
+                            backGroundColorStyle.FillPattern = FillPattern.SolidForeground;
                             var cell = row.CreateCell(cellIndex);
                             var rowVal = Convert.ToDouble(dsrow[col]);
                             bool isLowerTailLarger = Convert.ToBoolean(dsrow[14]);
@@ -139,15 +140,6 @@ namespace Zerodha.Excel
                     rowIndex++;
                 }
                 workbook.Write(fs);
-
-
-
-
-
-
-
-
-
             }
 
         }
