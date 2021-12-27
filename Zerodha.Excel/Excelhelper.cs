@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 
 namespace Zerodha.Excel
@@ -44,6 +45,35 @@ namespace Zerodha.Excel
                 IWorkbook workbook = new XSSFWorkbook();
                 ISheet excelSheet = workbook.CreateSheet("Sheet1");
                 excelSheet.CreateFreezePane(0, 1);
+                int rowCount = table.Rows.Count;
+                //Show high Volume activity
+                XSSFSheetConditionalFormatting condFormating = (XSSFSheetConditionalFormatting)excelSheet.SheetConditionalFormatting;
+                XSSFConditionalFormattingRule cfVolRed =
+                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, "3000000");
+
+                XSSFPatternFormatting fillRed = (XSSFPatternFormatting)cfVolRed.CreatePatternFormatting();
+                fillRed.FillBackgroundColor = IndexedColors.Red.Index;
+                fillRed.FillPattern = FillPattern.SolidForeground;
+                CellRangeAddress[] cfRangeVol = { CellRangeAddress.ValueOf($"F2:F{rowCount}") };
+                condFormating.AddConditionalFormatting(cfRangeVol, cfVolRed);
+                
+                //Show Volatility
+                XSSFConditionalFormattingRule cfVolatilityYellow =
+                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, "2");
+                XSSFPatternFormatting fillyellow = (XSSFPatternFormatting)cfVolatilityYellow.CreatePatternFormatting();
+                fillyellow.FillBackgroundColor = IndexedColors.LightYellow.Index;
+                fillyellow.FillPattern = FillPattern.SolidForeground;
+                CellRangeAddress[] cfRangelowToHighInCent = { CellRangeAddress.ValueOf($"M2:M{rowCount}") };
+                condFormating.AddConditionalFormatting(cfRangelowToHighInCent, cfVolatilityYellow);
+
+                XSSFConditionalFormattingRule cfVolatilitylight =
+                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, "10");
+                XSSFPatternFormatting fill_light = (XSSFPatternFormatting)cfVolatilitylight.CreatePatternFormatting();
+                fill_light.FillBackgroundColor = IndexedColors.Aqua.Index;
+                fill_light.FillPattern = FillPattern.SolidForeground;
+                CellRangeAddress[] cfRangelightlowToHighInCent = { CellRangeAddress.ValueOf($"G2:G{rowCount}") };
+                condFormating.AddConditionalFormatting(cfRangelightlowToHighInCent, cfVolatilitylight);
+                
                 List<String> columns = new List<string>();
                 IRow row = excelSheet.CreateRow(0);
                 int columnIndex = 0;
@@ -109,6 +139,15 @@ namespace Zerodha.Excel
                     rowIndex++;
                 }
                 workbook.Write(fs);
+
+
+
+
+
+
+
+
+
             }
 
         }
